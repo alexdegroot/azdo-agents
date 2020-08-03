@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         apt-transport-https \
         lsb-release \
         gnupg \
+        gnupg-agent \
         openssl \
         zip \
         unzip \
@@ -60,9 +61,14 @@ ENV CHROME_BIN=/usr/bin/chromium-browser \
         CHROME_PATH=/usr/lib/chromium/
 
 # Kubectl
-RUN curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+RUN curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -  > /dev/null
 RUN echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list
 RUN apt-get update && apt-get install -y --no-install-recommends kubectl
+
+# Docker-Compose
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -  > /dev/null
+RUN add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+RUN apt-get update && apt-get install docker-compose
 
 # Clean up /tmp
 RUN rm -rf *

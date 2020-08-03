@@ -4,7 +4,7 @@ $stamp=$(get-date -f yyyyMMddHHmm)
 $latestImage="${repo}/${imageName}:latest"
 $latestImageWithStamp="${repo}/${imageName}:${stamp}"
 
-docker build -t $latestImage -t $latestImageWithStamp .
+docker build -t $latestImage -t $latestImageWithStamp . --no-cache
 
 docker push $latestImage
 docker push $latestImageWithStamp
